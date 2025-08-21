@@ -8,7 +8,7 @@ import React, { useState } from "react";
 // Mock Data (can later fetch from API)
 const jobs = [
   {
-    companyLogo: "/company1.png",
+    companyLogo: "/images/collab.jpg",
     title: "Frontend Developer",
     company: "TechCorp",
     location: "Bangalore",
@@ -19,7 +19,7 @@ const jobs = [
     experience: "2-4 years",
   },
   {
-    companyLogo: "/company2.png",
+    companyLogo: "/images/collab.jpg",
     title: "Backend Engineer",
     company: "DataSoft",
     location: "Remote",
@@ -30,7 +30,7 @@ const jobs = [
     experience: "1-3 years",
   },
   {
-    companyLogo: "/company3.png",
+    companyLogo: "/images/collab.jpg",
     title: "Product Manager",
     company: "InnovateX",
     location: "Delhi",

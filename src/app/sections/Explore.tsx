@@ -1,18 +1,21 @@
 "use client";
 import { motion } from "framer-motion";
 import { BookOpen, Users } from "lucide-react";
+import Link from "next/link";
 
 const items = [
   {
     title: "Learn Modern Development",
     description: "Master the latest frameworks and tools",
     buttonText: "View Courses",
+    ref: "/courses",
     icon: <BookOpen className="w-12 h-12 text-violet-600" />,
   },
   {
     title: "Find Jobs ",
     description: "Open positions for talented developers",
     buttonText: "Browse Jobs",
+    ref: "/jobs",
     icon: <Users className="w-12 h-12 text-violet-600" />,
   },
 ];
@@ -43,9 +46,11 @@ export default function Explore() {
                   {item.title}
                 </h3>
                 <p className="text-gray-600 mb-6">{item.description}</p>
-                <button className="px-6 py-2 bg-violet-600 text-white rounded-lg hover:bg-violet-700 transition">
-                  {item.buttonText}
-                </button>
+                <Link href={item.ref}>
+                  <button className="px-6 py-2 bg-violet-600 text-white rounded-lg hover:bg-violet-700 cursor-pointer transition">
+                    {item.buttonText}
+                  </button>
+                </Link>
               </div>
             </motion.div>
           ))}

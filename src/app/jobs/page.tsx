@@ -1,7 +1,6 @@
 import { BackgroundBeams } from "@/components/ui/background-beams";
-import { Dot } from "lucide-react";
+import { BriefcaseBusiness, Dot } from "lucide-react";
 import React from "react";
-import { JobCard } from "@/components/JobCard";
 import JobBoard from "./job-board";
 
 export default function page() {
@@ -9,9 +8,9 @@ export default function page() {
     <>
       <div className="min-h-screen bg-white flex flex-col pt-20 px-5 justify-start">
         <div className="flex flex-col items-center justify-center pb-10">
-          <div className="flex w-fit items-center mx-auto mb-2 rounded-full bg-teal-100 px-4 py-1 text-sm font-medium text-teal-700 shadow-sm">
+          <div className="flex w-fit items-center mx-auto mb-2 rounded-full bg-violet-100 px-4 py-1 text-sm font-medium text-violet-700 shadow-sm">
             <span className="mr-2 ">
-              <Dot />
+              <BriefcaseBusiness />
             </span>
             Over 400+ jobs added this week
           </div>
