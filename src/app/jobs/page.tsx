@@ -1,9 +1,32 @@
+import JobCard from "@/components/JobCard";
 import { BackgroundBeams } from "@/components/ui/background-beams";
 import { BriefcaseBusiness, Dot } from "lucide-react";
-import React from "react";
-import JobBoard from "./job-board";
+import React, { Suspense } from "react";
 
-export default function page() {
+export default async function JobsPage() {
+  const jobs = [
+    {
+      title: "Frontend Development Intern",
+      company: "calqus",
+      location: "Remote",
+      type: "Internship",
+      experience: "0",
+      salary: "15k",
+      _id: "21",
+      postedAt: "2023-09-21",
+    },
+    {
+      title: "Frontend Development Intern",
+      company: "calqus",
+      location: "Remote",
+      type: "Internship",
+      experience: "0",
+      salary: "15k",
+      _id: "211",
+      postedAt: "2023-09-21",
+    },
+  ];
+
   return (
     <>
       <div className="min-h-screen bg-white flex flex-col pt-20 px-5 justify-start">
@@ -26,9 +49,10 @@ export default function page() {
           </p>
         </div>
         <BackgroundBeams />
-        <div className="min-h-screen">
-          {/* jobs filter and listing of job from here */}
-          <JobBoard />
+        <div className="grid grid-cols-1 sm:grid-cols-1 max-w-xl gap-6 mt-10">
+          {jobs.map((job) => (
+            <JobCard key={job._id} job={job} />
+          ))}
         </div>
       </div>
     </>
