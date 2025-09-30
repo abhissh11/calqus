@@ -8,6 +8,11 @@ import {
   Palette,
   Smartphone,
   Server,
+  BookOpen,
+  BriefcaseBusiness,
+  FileQuestionMark,
+  House,
+  CodeXml,
 } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import Image from "next/image";
@@ -36,7 +41,7 @@ export default function Header() {
 
   return (
     <>
-      <header className="fixed top-0 left-0 w-full z-50 bg-white dark:bg-black px-5 md:px-7 py-2 shadow-sm border-b flex justify-between items-center">
+      <header className="fixed top-0 left-0 w-full z-50 bg-white dark:bg-black px-5 md:px-7 py-2 shadow-sm border-b flex gap-2 justify-between items-center">
         {/* Logo */}
         <Link href="/">
           <h1 className="text-neutral-800 dark:text-neutral-100 text-2xl font-bold flex items-center">
@@ -52,8 +57,8 @@ export default function Header() {
 
         {/* Desktop Nav */}
         <ul className="hidden md:flex gap-6 items-center text-gray-700 dark:text-gray-200 relative">
-          <Link href="/" className="hover:text-violet-500">
-            Home
+          <Link href="/" className="hover:text-violet-500 flex items-end gap-1">
+            <House /> Home
           </Link>
 
           {/* Services Dropdown */}
@@ -62,8 +67,8 @@ export default function Header() {
             onMouseEnter={() => setServicesOpen(true)}
             onMouseLeave={() => setServicesOpen(false)}
           >
-            <button className="flex items-center gap-1 hover:text-violet-500">
-              Services
+            <button className="flex items-end gap-1 hover:text-violet-500">
+              <CodeXml size={24} /> Services
               <ChevronDown
                 size={20}
                 className={`transition-transform ${
@@ -102,16 +107,31 @@ export default function Header() {
             </AnimatePresence>
           </div>
 
-          <Link href="/courses" className="hover:text-violet-500">
-            Courses
+          <Link
+            href="/courses"
+            className="hover:text-violet-500 flex items-end gap-1"
+          >
+            <BookOpen size={24} /> Courses
           </Link>
-          <Link href="/jobs" className="hover:text-violet-500">
-            Jobs
+          <Link
+            href="/courses"
+            className="hover:text-violet-500 flex items-end gap-1"
+          >
+            <FileQuestionMark size={24} /> Interview-Questions
+          </Link>
+          <Link
+            href="/jobs"
+            className="hover:text-violet-500 flex items-end gap-1"
+          >
+            <BriefcaseBusiness size={24} /> Jobs
           </Link>
         </ul>
 
         {/* Desktop CTA */}
-        <div className="hidden md:block">
+        <div className="hidden md:flex items-center gap-4 text-gray-700">
+          <Link href="/login" className="hover:text-violet-500">
+            Login
+          </Link>
           <button
             onClick={() => setIsModalOpen(true)}
             className="px-4 py-2 text-white rounded-lg bg-violet-600 hover:bg-violet-700 cursor-pointer"
@@ -123,7 +143,7 @@ export default function Header() {
         {/* Mobile Menu Toggle */}
         <button
           onClick={() => setMobileOpen(!mobileOpen)}
-          className="md:hidden p-2 text-gray-700 dark:text-gray-200"
+          className="md:hidden p-1 text-gray-700 cursor-pointer hover:bg-violet-600 hover:text-white rounded-lg dark:text-gray-200"
         >
           {mobileOpen ? <X size={28} /> : <Menu size={28} />}
         </button>
@@ -137,27 +157,27 @@ export default function Header() {
               exit={{ opacity: 0, x: "100%" }}
               transition={{ duration: 0.25, ease: "easeInOut" }}
               ref={drawerRef}
-              className="fixed top-0 right-0 h-screen w-3/4 bg-white dark:bg-neutral-900 shadow-lg z-50 p-6 flex flex-col gap-6"
+              className="fixed top-0 right-0 h-screen w-3/4 bg-white dark:bg-neutral-900 shadow-lg z-50 p-6 flex flex-col gap-6 items-start justify-center"
             >
               {/* Close Icon inside drawer */}
               <button
                 onClick={() => setMobileOpen(false)}
-                className="absolute top-4 right-4 text-gray-700 dark:text-gray-200"
+                className="absolute top-4 right-4 text-gray-100 p-1 rounded-lg bg-violet-500 cursor-pointer hover:bg-violet-600 dark:text-gray-200"
               >
                 <X size={28} />
               </button>
 
               <Link
                 href="/"
-                className="hover:text-violet-500"
+                className="hover:text-violet-500 flex items-end gap-1"
                 onClick={() => setMobileOpen(false)}
               >
-                Home
+                <House size={24} /> Home
               </Link>
 
               <div>
-                <p className="font-medium text-gray-700 dark:text-gray-200 mb-2">
-                  Services
+                <p className="font-medium text-gray-700 flex items-end gap-1 dark:text-gray-200 mb-2">
+                  <CodeXml size={24} /> Services
                 </p>
                 <div className="flex flex-col gap-2">
                   <ServiceItem
@@ -180,17 +200,24 @@ export default function Header() {
 
               <Link
                 href="/courses"
-                className="hover:text-violet-500"
+                className="hover:text-violet-500 flex items-end gap-1"
                 onClick={() => setMobileOpen(false)}
               >
-                Courses
+                <BookOpen size={24} /> Courses
+              </Link>
+              <Link
+                href="/courses"
+                className="hover:text-violet-500 flex items-end gap-1"
+                onClick={() => setMobileOpen(false)}
+              >
+                <FileQuestionMark size={24} /> Interview-Questions
               </Link>
               <Link
                 href="/jobs"
-                className="hover:text-violet-500"
+                className="hover:text-violet-500 flex items-end gap-1"
                 onClick={() => setMobileOpen(false)}
               >
-                Jobs
+                <BriefcaseBusiness size={24} /> Jobs
               </Link>
 
               <button

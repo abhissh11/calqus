@@ -2,18 +2,19 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Frown } from "lucide-react";
 
 export default function NotFound() {
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-white text-center px-6">
-      <h1 className="text-7xl font-bold text-violet-600">404</h1>
-      <h2 className="mt-4 text-2xl md:text-3xl font-semibold text-gray-900">
-        Page Not Found
+      <h1 className="text-5xl font-semibold text-violet-600">404</h1>
+      <h2 className="mt-4 text-2xl md:text-2xl font-semibold text-gray-900 flex gap-2 items-center">
+        <Frown /> Page Not Found
       </h2>
       <p className="mt-2 text-gray-600 max-w-md">
-        Oops! The page you’re looking for doesn’t exist or has been moved. Let’s
-        get you back on track.
+        Oops! The page you’re looking for doesn’t exist. <br />
+         Let’s get you back on
+        track.
       </p>
 
       <Link
