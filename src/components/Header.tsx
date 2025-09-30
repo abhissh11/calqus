@@ -1,4 +1,5 @@
 "use client";
+
 import Link from "next/link";
 import React, { useState, useRef, useEffect } from "react";
 import {
@@ -17,12 +18,18 @@ import {
 import { AnimatePresence, motion } from "framer-motion";
 import Image from "next/image";
 import BookCallModal from "./BookCallModal";
+import { useSession, signOut } from "next-auth/react";
 
 export default function Header() {
   const [servicesOpen, setServicesOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const drawerRef = useRef<HTMLDivElement | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const { data: session, status } = useSession();
+
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
   // Close drawer on outside click
   useEffect(() => {
@@ -34,10 +41,21 @@ export default function Header() {
       ) {
         setMobileOpen(false);
       }
+      if (
+        dropdownOpen &&
+        dropdownRef.current &&
+        !dropdownRef.current.contains(e.target as Node)
+      ) {
+        setDropdownOpen(false);
+      }
     };
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, [mobileOpen]);
+  }, [mobileOpen, dropdownOpen]);
+
+  const firstName = session?.user?.name
+    ? session.user.name.split(" ")[0]
+    : null;
 
   return (
     <>
@@ -67,15 +85,17 @@ export default function Header() {
             onMouseEnter={() => setServicesOpen(true)}
             onMouseLeave={() => setServicesOpen(false)}
           >
-            <button className="flex items-end gap-1 hover:text-violet-500">
-              <CodeXml size={24} /> Services
-              <ChevronDown
-                size={20}
-                className={`transition-transform ${
-                  servicesOpen ? "rotate-180" : ""
-                }`}
-              />
-            </button>
+            <Link href="/services">
+              <button className="flex items-end gap-1 hover:text-violet-500">
+                <CodeXml size={24} /> Services
+                <ChevronDown
+                  size={20}
+                  className={`transition-transform ${
+                    servicesOpen ? "rotate-180" : ""
+                  }`}
+                />
+              </button>
+            </Link>
 
             <AnimatePresence>
               {servicesOpen && (
@@ -127,11 +147,51 @@ export default function Header() {
           </Link>
         </ul>
 
-        {/* Desktop CTA */}
-        <div className="hidden md:flex items-center gap-4 text-gray-700">
-          <Link href="/login" className="hover:text-violet-500">
-            Login
-          </Link>
+        {/* Desktop Right Section */}
+        <div className="hidden md:flex items-center gap-4 text-gray-700 dark:text-gray-200">
+          {status === "loading" ? (
+            <span>Loading...</span>
+          ) : session ? (
+            <div className="relative" ref={dropdownRef}>
+              <button
+                onClick={() => setDropdownOpen(!dropdownOpen)}
+                className="flex items-center gap-1 font-medium hover:text-violet-500"
+              >
+                {firstName}
+                <ChevronDown
+                  size={18}
+                  className={`transition-transform ${
+                    dropdownOpen ? "rotate-180" : ""
+                  }`}
+                />
+              </button>
+
+              {dropdownOpen && (
+                <div className="absolute right-0 mt-2 w-40 bg-white dark:bg-neutral-900 shadow-lg rounded-lg border border-gray-200 dark:border-neutral-700 py-2 z-50">
+                  {session.user?.isAdmin && (
+                    <Link
+                      href="/admin"
+                      className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-neutral-800"
+                      onClick={() => setDropdownOpen(false)}
+                    >
+                      Admin
+                    </Link>
+                  )}
+                  <button
+                    onClick={() => signOut()}
+                    className="w-full text-left px-4 py-2 hover:bg-gray-100 dark:hover:bg-neutral-800"
+                  >
+                    Logout
+                  </button>
+                </div>
+              )}
+            </div>
+          ) : (
+            <Link href="/login" className="hover:text-violet-500">
+              Login
+            </Link>
+          )}
+
           <button
             onClick={() => setIsModalOpen(true)}
             className="px-4 py-2 text-white rounded-lg bg-violet-600 hover:bg-violet-700 cursor-pointer"
@@ -159,7 +219,7 @@ export default function Header() {
               ref={drawerRef}
               className="fixed top-0 right-0 h-screen w-3/4 bg-white dark:bg-neutral-900 shadow-lg z-50 p-6 flex flex-col gap-6 items-start justify-center"
             >
-              {/* Close Icon inside drawer */}
+              {/* Close Icon */}
               <button
                 onClick={() => setMobileOpen(false)}
                 className="absolute top-4 right-4 text-gray-100 p-1 rounded-lg bg-violet-500 cursor-pointer hover:bg-violet-600 dark:text-gray-200"
@@ -220,19 +280,59 @@ export default function Header() {
                 <BriefcaseBusiness size={24} /> Jobs
               </Link>
 
-              <button
-                onClick={() => {
-                  setMobileOpen(false);
-                  setIsModalOpen(true);
-                }}
-                className="mt-auto px-4 py-2 text-white rounded-lg bg-violet-600 hover:bg-violet-700 cursor-pointer"
-              >
-                Book a Call
-              </button>
+              {/* User Info */}
+              <div className="mt-auto flex flex-col gap-3">
+                {status === "loading" ? (
+                  <span>Loading...</span>
+                ) : session ? (
+                  <>
+                    <span className="font-medium text-gray-200">
+                      {firstName}
+                    </span>
+                    {session.user?.isAdmin && (
+                      <Link
+                        href="/admin"
+                        onClick={() => setMobileOpen(false)}
+                        className="px-4 py-2 bg-gray-100 dark:bg-neutral-800 rounded hover:bg-gray-200 dark:hover:bg-neutral-700"
+                      >
+                        Admin
+                      </Link>
+                    )}
+                    <button
+                      onClick={() => {
+                        setMobileOpen(false);
+                        signOut();
+                      }}
+                      className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600"
+                    >
+                      Logout
+                    </button>
+                  </>
+                ) : (
+                  <Link
+                    href="/login"
+                    onClick={() => setMobileOpen(false)}
+                    className="px-4 py-2 bg-violet-600 text-white rounded-lg hover:bg-violet-700"
+                  >
+                    Login
+                  </Link>
+                )}
+
+                <button
+                  onClick={() => {
+                    setMobileOpen(false);
+                    setIsModalOpen(true);
+                  }}
+                  className="px-4 py-2 text-white rounded-lg bg-violet-600 hover:bg-violet-700 cursor-pointer"
+                >
+                  Book a Call
+                </button>
+              </div>
             </motion.div>
           )}
         </AnimatePresence>
       </header>
+
       <BookCallModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
