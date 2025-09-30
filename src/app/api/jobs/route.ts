@@ -1,62 +1,48 @@
 import { NextResponse } from "next/server";
-import { dbConnect } from "@/lib/db";
-import Job from "@/models/job";
-import { JobCreateSchema } from "@/validations/job";
+import { connectDB } from "@/lib/mongodb";
+import { Job } from "@/models/Job";
+import { auth } from "../../../../auth";
+import { generateJobSlug } from "@/lib/generateSlug";
+import mongoose from "mongoose";
 
-export const runtime = "nodejs";
-export const dynamic = "force-dynamic";
-
-// GET /api/jobs  
-export async function GET(req: Request) {
-    await dbConnect();
-
-    const { searchParams } = new URL(req.url);
-
-    const type = searchParams.get("type");              // "Full Time" | "Internship"
-    const experience = searchParams.get("experience");  // e.g. "2" (means >= 2 years)
-    const company = searchParams.get("company");
-    const domain = searchParams.get("domain");          // e.g. "Frontend Developer"
-
-    const query: any = {};
-
-    if (type) query.type = type;
-
-    if (experience) {
-        query.experience = { $gte: Number(experience) };  // >= X years
-    }
-
-    if (company) {
-        query.company = { $regex: company, $options: "i" };
-    }
-
-    if (domain) {
-        query.domain = domain; // exact match with dropdown values
-    }
-
-    const jobs = await Job.find(query).sort({ createdAt: -1 }).lean();
-    return NextResponse.json({ ok: true, count: jobs.length, jobs });
+// GET all jobs
+export async function GET() {
+    await connectDB();
+    const jobs = await Job.find().sort({ postedAt: -1 });
+    return NextResponse.json(jobs);
 }
 
-// POST /api/jobs
+// POST (Admin only)
 export async function POST(req: Request) {
-    await dbConnect();
+    const session = await auth();
+
+    if (!session || !session.user?.isAdmin) {
+        return new NextResponse("Unauthorized", { status: 401 });
+    }
 
     try {
-        const json = await req.json();
-        const parsed = JobCreateSchema.parse(json);
+        await connectDB();
+        const body = await req.json();
+        const { title, company, location, jobType, salary, experience, companyLogo } =
+            body;
 
-        const created = await Job.create({
-            ...parsed,
-            postedAt: new Date(),
+        const uniqueId = new mongoose.Types.ObjectId().toString().slice(-6); // short unique
+        const slug = generateJobSlug(company, title, jobType, uniqueId);
+
+        const job = await Job.create({
+            title,
+            company,
+            location,
+            jobType,
+            salary,
+            experience,
+            companyLogo,
+            slug,
         });
 
-        return NextResponse.json({ ok: true, job: created }, { status: 201 });
-    } catch (err: any) {
-        const message =
-            err?.errors?.map?.((e: any) => e.message).join(", ") ||
-            err?.message ||
-            "Invalid request";
-
-        return NextResponse.json({ ok: false, error: message }, { status: 400 });
+        return NextResponse.json(job);
+    } catch (err) {
+        console.error(err);
+        return new NextResponse("Failed to post job", { status: 500 });
     }
 }

@@ -1,60 +1,49 @@
-import JobCard from "@/components/JobCard";
-import { BackgroundBeams } from "@/components/ui/background-beams";
-import { BriefcaseBusiness, Dot } from "lucide-react";
-import React, { Suspense } from "react";
+import Link from "next/link";
+
+async function getJobs() {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/jobs`, {
+    cache: "no-store",
+  });
+  return res.json();
+}
 
 export default async function JobsPage() {
-  const jobs = [
-    {
-      title: "Frontend Development Intern",
-      company: "calqus",
-      location: "Remote",
-      type: "Internship",
-      experience: "0",
-      salary: "15k",
-      _id: "21",
-      postedAt: "2023-09-21",
-    },
-    {
-      title: "Frontend Development Intern",
-      company: "calqus",
-      location: "Remote",
-      type: "Internship",
-      experience: "0",
-      salary: "15k",
-      _id: "211",
-      postedAt: "2023-09-21",
-    },
-  ];
+  const jobs = await getJobs();
 
   return (
-    <>
-      <div className="min-h-screen bg-white flex flex-col pt-20 px-5 justify-start">
-        <div className="flex flex-col items-center justify-center pb-10">
-          <div className="flex w-fit items-center mx-auto mb-2 rounded-full bg-violet-100 px-4 py-1 text-sm font-medium text-violet-700 shadow-sm">
-            <span className="mr-2 ">
-              <BriefcaseBusiness />
-            </span>
-            Over 400+ jobs added this week
-          </div>
-          <h1 className="z-20 bg-gradient-to-b from-neutral-400 to-neutral-700 text-center bg-clip-text py-8 text-3xl font-bold text-transparent sm:text-5xl">
-            Find Your Next Career Move with
-            <br />
-            <span className="text-violet-600">Calqus</span> curated jobs
-          </h1>
-          <p className="text-base max-w-2xl text-gray-600">
-            Join hundreds of professionals who have found their dream jobs
-            through Calqus curated jobs. With over 2,000 active jobs and global
-            opportunities, your next career move is just a click away.
-          </p>
-        </div>
-        <BackgroundBeams />
-        <div className="grid grid-cols-1 sm:grid-cols-1 max-w-xl gap-6 mt-10">
-          {jobs.map((job) => (
-            <JobCard key={job._id} job={job} />
-          ))}
-        </div>
+    <main className="max-w-4xl mx-auto py-20">
+      <h1 className="text-3xl font-bold mb-6">Job Listings</h1>
+      <div className="space-y-4">
+        {jobs.map((job: any) => (
+          <Link
+            key={job._id}
+            href={`/jobs/${job.slug}`}
+            className="block p-4 border rounded hover:bg-gray-50"
+          >
+            <div className="flex items-center gap-4">
+              {job.companyLogo ? (
+                <img
+                  src={job.companyLogo}
+                  alt={job.company}
+                  className="w-16 h-16 rounded object-cover"
+                />
+              ) : (
+                <img
+                  src="/images/tech-office.jpg"
+                  alt={job.company}
+                  className="w-16 h-16 rounded object-cover"
+                />
+              )}
+              <div>
+                <h2 className="text-xl font-semibold">{job.title}</h2>
+                <p className="text-sm text-gray-600">
+                  {job.company} • {job.location} • {job.jobType}
+                </p>
+              </div>
+            </div>
+          </Link>
+        ))}
       </div>
-    </>
+    </main>
   );
 }
