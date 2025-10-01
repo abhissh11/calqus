@@ -1,8 +1,9 @@
 "use client";
 import JobCard from "@/components/JobCard";
 import { useJobs } from "../hooks/useJobs";
-import { BriefcaseBusiness } from "lucide-react";
+import { BriefcaseBusiness, SendHorizontal } from "lucide-react";
 import { BackgroundBeams } from "@/components/ui/background-beams";
+import Link from "next/link";
 
 export default function JobsPage() {
   const { jobs, loading, page, setPage, totalPages, filters, setFilters } =
@@ -26,12 +27,14 @@ export default function JobsPage() {
           </h1>
           <p className="text-base max-w-2xl text-gray-600">
             Join hundreds of professionals who have found their dream jobs
-            through Calqus curated jobs. We search beyond the major job boards, bringing you unseen opportunities from every company career page on the internet.
+            through Calqus curated jobs. We search beyond the major job boards,
+            bringing you unseen opportunities from every company career page on
+            the internet.
           </p>
         </div>
-      <div className="absolute inset-0 -z-10">
-    <BackgroundBeams />
-  </div>
+        <div className="absolute inset-0 -z-10">
+          <BackgroundBeams />
+        </div>
       </div>
 
       {/* Main Content */}
@@ -39,21 +42,40 @@ export default function JobsPage() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* LEFT COLUMN - Dashboard/Ad */}
           <aside className="md:col-span-1">
-            <div className="sticky top-28 bg-white dark:bg-neutral-900 shadow rounded-lg p-6 border">
-              <h2 className="text-xl font-bold mb-3">Join the Premium Group</h2>
-              <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
-                Get job referrals, HR emails, and direct apply forms delivered
-                to your WhatsApp.
-              </p>
-              <button className="w-full px-4 py-2 text-white rounded-lg bg-violet-600 hover:bg-violet-700 cursor-pointer">
-                Join WhatsApp Community
-              </button>
+            <div className="sticky flex flex-col gap-2 top-28 bg-white dark:bg-neutral-900 shadow rounded-lg p-6 border">
+              <div className="border border-gray-400 p-2 rounded-lg flex flex-col gap-2">
+                <h2 className="text-xl font-semibold">
+                  Join the Premium Group
+                </h2>
+                <p className="text-sm text-gray-600 dark:text-gray-400 ">
+                  Referral group is a private group where we share exclusive
+                  referrals, direct recruiter contacts, Insider openings & more.
+                  <br /> Everyday 30-40 verified referrals and openings are
+                  being shared, which you WON'T FIND ANYWHERE.
+                </p>
+                <Link href="https://t.me/abhishek_dot" target="_blank">
+                  <button className="group w-full flex gap-1 items-end px-4 py-2 text-white rounded-lg bg-violet-600 hover:bg-violet-700 cursor-pointer">
+                    Message to Join
+                    <span>
+                      <SendHorizontal className="group-hover:translate-x-1.5 transition delay-75" />{" "}
+                    </span>
+                  </button>
+                </Link>
+              </div>
+              <div className="border border-gray-400 p-2 rounded-lg ">
+                <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+                  Get jobs and internships posted on Calqus directly delivered
+                  to your whatsapp inbox.
+                </p>
+                <button className="w-full px-4 py-2 text-white rounded-lg bg-violet-600 hover:bg-violet-700 cursor-pointer">
+                  Join WhatsApp Group
+                </button>
+              </div>
             </div>
           </aside>
 
           {/* RIGHT COLUMN - Job Listings */}
           <div className="md:col-span-3">
-
             {/* Filters */}
             <div className="flex flex-wrap gap-3 mb-6">
               <select
@@ -84,7 +106,9 @@ export default function JobsPage() {
                 type="text"
                 placeholder="Search title"
                 value={filters.title || ""}
-                onChange={(e) => setFilters({ ...filters, title: e.target.value })}
+                onChange={(e) =>
+                  setFilters({ ...filters, title: e.target.value })
+                }
                 className="border border-gray-400 p-2 rounded flex-1 min-w-[150px]"
               />
             </div>
@@ -105,7 +129,7 @@ export default function JobsPage() {
               <button
                 disabled={page === 1}
                 onClick={() => setPage((p) => p - 1)}
-                className="px-3 py-1 border rounded disabled:opacity-50"
+                className="px-3 py-1 border text-white bg-violet-500 hover:bg-violet-600 cursor-pointer  rounded disabled:opacity-50"
               >
                 Previous
               </button>
@@ -115,7 +139,7 @@ export default function JobsPage() {
               <button
                 disabled={page === totalPages}
                 onClick={() => setPage((p) => p + 1)}
-                className="px-3 py-1 border rounded disabled:opacity-50"
+                className="px-3 py-1 border text-white bg-violet-500 hover:bg-violet-600 cursor-pointer rounded disabled:opacity-50"
               >
                 Next
               </button>

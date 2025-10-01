@@ -21,22 +21,19 @@ export default function JobCard({ job }: JobCardProps) {
   return (
     <Link
       href={`/jobs/${job.slug}`}
-      className="flex gap-6 p-4 border rounded-lg hover:shadow-md transition bg-white"
+      className="flex flex-col sm:flex-row gap-6 p-4 border border-gray-400 rounded-lg hover:shadow-md shadow-violet-300 transition bg-white"
     >
       {/* Company Logo / Image */}
-      <div className="w-40 h-28 flex-shrink-0">
+      <div className="w-full sm:w-40 h-40 sm:h-28 flex-shrink-0">
         <img
-          src={
-            job.companyLogo ||
-            "/images/tech-office.jpg"
-          }
+          src={job.companyLogo || "/images/tech-office.jpg"}
           alt={job.company}
           className="w-full h-full object-cover rounded-md"
         />
       </div>
 
       {/* Job Info */}
-      <div className="flex flex-col justify-between flex-1">
+      <div className="flex flex-col justify-between flex-1 mt-3 sm:mt-0">
         <div>
           {/* Title */}
           <h2 className="text-lg font-semibold text-gray-900">
@@ -45,7 +42,7 @@ export default function JobCard({ job }: JobCardProps) {
 
           {/* Posted by & date */}
           <p className="text-sm text-gray-500 mt-1">
-            Posted - <span> </span>
+            Posted -{" "}
             {job.postedAt
               ? new Date(job.postedAt).toLocaleDateString("en-GB", {
                   day: "2-digit",
