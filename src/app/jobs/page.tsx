@@ -1,49 +1,128 @@
-import Link from "next/link";
+"use client";
+import JobCard from "@/components/JobCard";
+import { useJobs } from "../hooks/useJobs";
+import { BriefcaseBusiness } from "lucide-react";
+import { BackgroundBeams } from "@/components/ui/background-beams";
 
-async function getJobs() {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/jobs`, {
-    cache: "no-store",
-  });
-  return res.json();
-}
-
-export default async function JobsPage() {
-  const jobs = await getJobs();
+export default function JobsPage() {
+  const { jobs, loading, page, setPage, totalPages, filters, setFilters } =
+    useJobs();
 
   return (
-    <main className="max-w-4xl mx-auto py-20">
-      <h1 className="text-3xl font-bold mb-6">Job Listings</h1>
-      <div className="space-y-4">
-        {jobs.map((job: any) => (
-          <Link
-            key={job._id}
-            href={`/jobs/${job.slug}`}
-            className="block p-4 border rounded hover:bg-gray-50"
-          >
-            <div className="flex items-center gap-4">
-              {job.companyLogo ? (
-                <img
-                  src={job.companyLogo}
-                  alt={job.company}
-                  className="w-16 h-16 rounded object-cover"
-                />
-              ) : (
-                <img
-                  src="/images/tech-office.jpg"
-                  alt={job.company}
-                  className="w-16 h-16 rounded object-cover"
-                />
-              )}
-              <div>
-                <h2 className="text-xl font-semibold">{job.title}</h2>
-                <p className="text-sm text-gray-600">
-                  {job.company} • {job.location} • {job.jobType}
-                </p>
-              </div>
-            </div>
-          </Link>
-        ))}
+    <>
+      {/* Hero Section */}
+      <div className="bg-white flex flex-col pt-20 px-5 justify-start">
+        <div className="flex flex-col items-center justify-center pb-10 text-center">
+          <div className="flex w-fit items-center mx-auto mb-2 rounded-full bg-violet-100 px-4 py-1 text-sm font-medium text-violet-700 shadow-sm">
+            <span className="mr-2">
+              <BriefcaseBusiness />
+            </span>
+            Over 200+ jobs added this week
+          </div>
+          <h1 className="z-20 bg-gradient-to-b from-neutral-400 to-neutral-700 text-center bg-clip-text py-8 text-3xl font-bold text-transparent sm:text-5xl">
+            The Last Job Board You'll Ever Need.
+            <br />
+            <span className="text-violet-600">Calqus</span> curated jobs
+          </h1>
+          <p className="text-base max-w-2xl text-gray-600">
+            Join hundreds of professionals who have found their dream jobs
+            through Calqus curated jobs. We search beyond the major job boards, bringing you unseen opportunities from every company career page on the internet.
+          </p>
+        </div>
+      <div className="absolute inset-0 -z-10">
+    <BackgroundBeams />
+  </div>
       </div>
-    </main>
+
+      {/* Main Content */}
+      <main className="max-w-7xl mx-auto min-h-screen px-4 md:px-10 py-10">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+          {/* LEFT COLUMN - Dashboard/Ad */}
+          <aside className="md:col-span-1">
+            <div className="sticky top-28 bg-white dark:bg-neutral-900 shadow rounded-lg p-6 border">
+              <h2 className="text-xl font-bold mb-3">Join the Premium Group</h2>
+              <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+                Get job referrals, HR emails, and direct apply forms delivered
+                to your WhatsApp.
+              </p>
+              <button className="w-full px-4 py-2 text-white rounded-lg bg-violet-600 hover:bg-violet-700 cursor-pointer">
+                Join WhatsApp Community
+              </button>
+            </div>
+          </aside>
+
+          {/* RIGHT COLUMN - Job Listings */}
+          <div className="md:col-span-3">
+
+            {/* Filters */}
+            <div className="flex flex-wrap gap-3 mb-6">
+              <select
+                value={filters.jobType || ""}
+                onChange={(e) =>
+                  setFilters({ ...filters, jobType: e.target.value })
+                }
+                className="border border-gray-400 p-2 rounded flex-1 min-w-[150px]"
+              >
+                <option value="">All Jobs</option>
+                <option value="Full Time">Full Time</option>
+                <option value="Part Time">Part Time</option>
+                <option value="Internship">Internship</option>
+                <option value="Contract">Contract</option>
+              </select>
+
+              <input
+                type="text"
+                placeholder="Experience (e.g. 2+ years)"
+                value={filters.experience || ""}
+                onChange={(e) =>
+                  setFilters({ ...filters, experience: e.target.value })
+                }
+                className="border border-gray-400 p-2 rounded flex-1 min-w-[150px]"
+              />
+
+              <input
+                type="text"
+                placeholder="Search title"
+                value={filters.title || ""}
+                onChange={(e) => setFilters({ ...filters, title: e.target.value })}
+                className="border border-gray-400 p-2 rounded flex-1 min-w-[150px]"
+              />
+            </div>
+
+            {/* Job List */}
+            {loading ? (
+              <p>Loading jobs...</p>
+            ) : (
+              <div className="space-y-4">
+                {jobs.map((job) => (
+                  <JobCard key={job._id} job={job} />
+                ))}
+              </div>
+            )}
+
+            {/* Pagination */}
+            <div className="flex items-center justify-between mt-6">
+              <button
+                disabled={page === 1}
+                onClick={() => setPage((p) => p - 1)}
+                className="px-3 py-1 border rounded disabled:opacity-50"
+              >
+                Previous
+              </button>
+              <span>
+                Page {page} of {totalPages}
+              </span>
+              <button
+                disabled={page === totalPages}
+                onClick={() => setPage((p) => p + 1)}
+                className="px-3 py-1 border rounded disabled:opacity-50"
+              >
+                Next
+              </button>
+            </div>
+          </div>
+        </div>
+      </main>
+    </>
   );
 }

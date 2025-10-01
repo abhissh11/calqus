@@ -5,12 +5,34 @@ import { auth } from "../../../../auth";
 import { generateJobSlug } from "@/lib/generateSlug";
 import mongoose from "mongoose";
 
-// GET all jobs
-export async function GET() {
+// GET /api/jobs?page=1&jobType=Full Time&experience=2&title=Frontend
+export async function GET(req: Request) {
     await connectDB();
-    const jobs = await Job.find().sort({ postedAt: -1 });
-    return NextResponse.json(jobs);
+
+    const { searchParams } = new URL(req.url);
+
+    const page = parseInt(searchParams.get("page") || "1");
+    const limit = 20;
+    const skip = (page - 1) * limit;
+
+    const jobType = searchParams.get("jobType");
+    const experience = searchParams.get("experience");
+    const title = searchParams.get("title");
+
+    const query: any = {};
+
+    if (jobType) query.jobType = jobType;
+    if (experience) query.experience = { $regex: experience, $options: "i" };
+    if (title) query.title = { $regex: title, $options: "i" };
+
+    const jobs = await Job.find(query).sort({ postedAt: -1 }).skip(skip).limit(limit);
+
+    const total = await Job.countDocuments(query);
+    const totalPages = Math.ceil(total / limit);
+
+    return NextResponse.json({ jobs, page, totalPages });
 }
+
 
 // POST (Admin only)
 export async function POST(req: Request) {
@@ -23,7 +45,7 @@ export async function POST(req: Request) {
     try {
         await connectDB();
         const body = await req.json();
-        const { title, company, location, jobType, salary, experience, companyLogo } =
+        const { title, company, location, jobType, salary, experience, companyLogo, jobDescription, applyLink } =
             body;
 
         const uniqueId = new mongoose.Types.ObjectId().toString().slice(-6); // short unique
@@ -38,6 +60,8 @@ export async function POST(req: Request) {
             experience,
             companyLogo,
             slug,
+            jobDescription,
+            applyLink
         });
 
         return NextResponse.json(job);

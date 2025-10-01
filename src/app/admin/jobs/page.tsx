@@ -22,6 +22,8 @@ export default function NewJobPage() {
       salary: formData.get("salary"),
       experience: formData.get("experience"),
       companyLogo: formData.get("companyLogo"),
+      applyLink: formData.get("applyLink"),
+      jobDescription: formData.get("jobDescription"), // ✅ include description
     };
 
     try {
@@ -45,12 +47,13 @@ export default function NewJobPage() {
   };
 
   return (
-    <main className="max-w-2xl mx-auto py-10">
+    <main className="max-w-2xl mx-auto my-20 shadow-lg p-8 rounded-xl shadow-violet-300">
       <h1 className="text-3xl font-bold mb-6">Post a Job</h1>
 
       {error && <p className="text-red-500 mb-4">{error}</p>}
 
       <form onSubmit={handleSubmit} className="space-y-4">
+        {/* Job Title */}
         <div>
           <label className="block font-medium">Job Title</label>
           <input
@@ -62,6 +65,18 @@ export default function NewJobPage() {
           />
         </div>
 
+        {/* Apply Link */}
+        <div>
+          <label className="block font-medium">Apply Link</label>
+          <input
+            type="text"
+            name="applyLink"
+            className="w-full border p-2 rounded"
+            placeholder="https://apply.example.com"
+          />
+        </div>
+
+        {/* Company */}
         <div>
           <label className="block font-medium">Company</label>
           <input
@@ -73,6 +88,7 @@ export default function NewJobPage() {
           />
         </div>
 
+        {/* Location */}
         <div>
           <label className="block font-medium">Location</label>
           <input
@@ -83,6 +99,7 @@ export default function NewJobPage() {
           />
         </div>
 
+        {/* Job Type */}
         <div>
           <label className="block font-medium">Job Type</label>
           <select name="jobType" required className="w-full border p-2 rounded">
@@ -94,6 +111,7 @@ export default function NewJobPage() {
           </select>
         </div>
 
+        {/* Salary */}
         <div>
           <label className="block font-medium">Salary</label>
           <input
@@ -105,6 +123,7 @@ export default function NewJobPage() {
           />
         </div>
 
+        {/* Experience */}
         <div>
           <label className="block font-medium">Experience</label>
           <input
@@ -116,6 +135,7 @@ export default function NewJobPage() {
           />
         </div>
 
+        {/* Company Logo */}
         <div>
           <label className="block font-medium">Company Logo URL</label>
           <input
@@ -126,6 +146,19 @@ export default function NewJobPage() {
           />
         </div>
 
+        {/* ✅ Job Description */}
+        <div>
+          <label className="block font-medium">Job Description</label>
+          <textarea
+            name="jobDescription"
+            required
+            rows={6}
+            className="w-full border p-2 rounded"
+            placeholder="Write the job responsibilities, required skills, and perks..."
+          />
+        </div>
+
+        {/* Submit */}
         <button
           type="submit"
           disabled={loading}

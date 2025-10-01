@@ -11,7 +11,7 @@ export async function GET(
 ) {
     await connectDB();
 
-    const { slug } = await params; // ✅ await params here
+    const { slug } = await params;
     const job = await Job.findOne({ slug });
 
     if (!job) return new NextResponse("Job not found", { status: 404 });

@@ -1,62 +1,47 @@
 import { notFound } from "next/navigation";
 
-interface JobProps {
-  params: Promise<{ slug: string }>;
-}
-
 async function getJob(slug: string) {
-  console.log(slug);
-  const res = await fetch(`http://localhost:3000/api/jobs/${slug}`, {
-    cache: "no-store",
-  });
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_BASE_URL}/api/jobs/${slug}`,
+    { cache: "no-store" }
+  );
   if (!res.ok) return null;
   return res.json();
 }
 
-export default async function JobPage({ params }: JobProps) {
+interface JobPageProps {
+  params: Promise<{ slug: string }>;
+}
+
+export default async function JobPage({ params }: JobPageProps) {
   const { slug } = await params;
   const job = await getJob(slug);
 
-  if (!job) {
-    notFound();
-  }
+  if (!job) notFound();
 
   return (
-    <main className="max-w-3xl mx-auto py-20 min-h-screen">
-      <div className="flex items-center gap-4 mb-6">
-        {job.companyLogo ? (
-          <img
-            src={job.companyLogo}
-            alt={job.company}
-            className="w-16 h-16 rounded object-cover"
-          />
-        ) : (
-          <img
-            src="/images/tech-office.jpg"
-            alt={job.company}
-            className="w-16 h-16 rounded object-cover"
-          />
-        )}
+    <main className="max-w-3xl mx-auto my-10 py-10">
+      <h1 className="text-3xl font-bold">{job.title}</h1>
+      <p className="text-gray-600 mb-4">
+        {job.company} • {job.location} • {job.jobType}
+      </p>
+      <p><strong>Salary:</strong> {job.salary}</p>
+      <p><strong>Experience:</strong> {job.experience}</p>
+      <p><strong>Posted:</strong> {new Date(job.postedAt).toDateString()}</p>
 
-        <div>
-          <h1 className="text-3xl font-bold">{job.title}</h1>
-          <p className="text-gray-600">
-            {job.company} • {job.location} • {job.jobType}
-          </p>
-        </div>
+      <div className="mt-6">
+        <h2 className="text-xl font-semibold mb-2">Job Description</h2>
+        <p className="whitespace-pre-line text-gray-700">{job.jobDescription}</p>
       </div>
 
-      <div className="space-y-2">
-        <p>
-          <strong>Salary:</strong> {job.salary}
-        </p>
-        <p>
-          <strong>Experience:</strong> {job.experience}
-        </p>
-        <p>
-          <strong>Posted:</strong> {new Date(job.postedAt).toDateString()}
-        </p>
-      </div>
+      <a
+        href={job.applyLink}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="inline-block mt-6 px-4 py-2 bg-violet-600 text-white rounded hover:bg-violet-700"
+      >
+        Apply Now
+      </a>
     </main>
   );
 }

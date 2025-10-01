@@ -10,7 +10,9 @@ export interface IJob {
     jobType: "Full Time" | "Part Time" | "Internship" | "Contract";
     salary: string;
     experience: string;
-    slug: string; // 👈 unique URL slug
+    slug: string;
+    jobDescription: string;
+    applyLink: string;
 }
 
 const JobSchema = new Schema<IJob>({
@@ -31,6 +33,8 @@ const JobSchema = new Schema<IJob>({
     salary: { type: String, required: true },
     experience: { type: String, required: true },
     slug: { type: String, unique: true, required: true },
+    jobDescription: { type: String, required: true },
+    applyLink: { type: String, required: true }
 });
 
 export const Job: Model<IJob> =
