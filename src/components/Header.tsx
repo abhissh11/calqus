@@ -134,10 +134,10 @@ export default function Header() {
             <BookOpen size={24} /> Courses
           </Link>
           <Link
-            href="/courses"
+            href="/interview"
             className="hover:text-violet-500 flex items-end gap-1"
           >
-            <FileQuestionMark size={24} /> Interview-Questions
+            <FileQuestionMark size={24} /> Interview-Prep
           </Link>
           <Link
             href="/jobs"

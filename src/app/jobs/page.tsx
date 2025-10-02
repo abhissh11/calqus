@@ -51,7 +51,8 @@ export default function JobsPage() {
                   Referral group is a private group where we share exclusive
                   referrals, direct recruiter contacts, Insider openings & more.
                   <br /> Everyday 30-40 verified referrals and openings are
-                  being shared, which you WON'T FIND ANYWHERE.
+                  being shared, which you{" "}
+                  <span className="text-violet-600">won't find anywhere.</span>
                 </p>
                 <Link href="https://t.me/abhishek_dot" target="_blank">
                   <button className="group w-full flex gap-1 items-end px-4 py-2 text-white rounded-lg bg-violet-600 hover:bg-violet-700 cursor-pointer">
