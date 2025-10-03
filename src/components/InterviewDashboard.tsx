@@ -1,84 +1,112 @@
 "use client";
 
-import { useState } from "react";
-import Link from "next/link";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
 import {
   ChevronDown,
   ChevronUp,
   BookOpen,
   Cpu,
   FileText,
-  TvMinimal,
+  Briefcase,
+  BriefcaseBusiness,
 } from "lucide-react";
 
-export default function InterviewDashboard() {
+export default function InterviewDashboard({
+  activeTab,
+}: {
+  activeTab: string | null;
+}) {
   const [open, setOpen] = useState(true);
+  const [subjects, setSubjects] = useState<string[]>([]);
+  const router = useRouter();
+  const searchParams = useSearchParams();
 
-  const topics = [
-    "JavaScript",
-    "React",
-    "Node.js",
-    "MongoDB",
-    "Java",
-    "Docker",
-    "AWS",
-  ];
+  useEffect(() => {
+    const fetchSubjects = async () => {
+      try {
+        const res = await fetch("/api/interview-topics");
+        const data = await res.json();
+
+        const uniqueSubjects: string[] = Array.from(
+          new Set(
+            data
+              .map((t: any) => t?.subject?.trim())
+              .filter((s: string | undefined) => !!s)
+          )
+        );
+
+        setSubjects(uniqueSubjects);
+      } catch (err) {
+        console.error("Failed to fetch subjects", err);
+      }
+    };
+    fetchSubjects();
+  }, []);
+
+  const handleClick = (subject: string) => {
+    const params = new URLSearchParams(searchParams.toString());
+    params.set("tab", subject.toLowerCase());
+    router.push(`?${params.toString()}`);
+  };
 
   return (
-    <aside className="w-full h-screen bg-white dark:bg-neutral-900 border-r shadow-sm shadow-violet-200 rounded-lg flex flex-col p-4">
-      {/* Interview Questions dropdown */}
+    <aside className="w-full h-screen bg-white dark:bg-neutral-900 border-r shadow-md flex flex-col p-4 overflow-y-auto">
+      <h2 className="text-xl font-bold mb-6 text-violet-600 etxt-center">
+        Interview DB
+      </h2>
+
+      {/* Subjects Dropdown */}
       <div className="mb-6">
         <button
           onClick={() => setOpen(!open)}
-          className={`${
-            open
-              ? `bg-violet-500 hover:bg-violet-600 text-gray-100`
-              : `text-gray-900  `
-          } flex items-center justify-between w-full font-semibold  dark:text-gray-200 px-2 py-2 rounded hover:bg-violet-200 dark:hover:bg-neutral-800 cursor-pointer`}
+          className="flex items-center justify-between w-full font-semibold text-gray-100 px-2 py-2 rounded bg-violet-500"
         >
           <span className="flex items-center gap-2">
-            <BookOpen size={20} />
-            Interview
+            <BookOpen size={18} />
+            Subjects
           </span>
           {open ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
         </button>
 
         {open && (
-          <ul className="mt-1 pl-8 space-y-2 text-sm text-gray-700 bg-violet-100 rounded-md dark:text-gray-300">
-            {topics.map((topic) => (
-              <li key={topic}>
-                <Link
-                  href={`/interview/${topic.toLowerCase()}`}
-                  className="block px-2 py-1 rounded hover:bg-violet-200 dark:hover:bg-neutral-800"
-                >
-                  {topic}
-                </Link>
-              </li>
-            ))}
+          <ul className="mt-2 px-4 py-4 space-y-2 text-sm text-gray-700 bg-violet-200 rounded-sm">
+            {subjects.map((subj) => {
+              if (!subj) return null;
+              const isActive = activeTab === subj.toLowerCase();
+              return (
+                <li key={subj}>
+                  <button
+                    onClick={() => handleClick(subj)}
+                    className={`w-full text-left px-2 py-1 rounded cursor-pointer ${
+                      isActive
+                        ? "bg-violet-300 text-violet-700 font-semibold"
+                        : "hover:bg-violet-50 dark:hover:bg-neutral-800"
+                    }`}
+                  >
+                    {subj}
+                  </button>
+                </li>
+              );
+            })}
           </ul>
         )}
       </div>
 
-      {/* AI Interview */}
-      <Link
-        href="/interview/ai"
-        className="flex items-center gap-2 px-2 py-2 mb-3 rounded font-semibold text-gray-800 dark:text-gray-200 hover:bg-violet-200 dark:hover:bg-neutral-800"
-      >
-        <TvMinimal size={20} />
+      {/* Other Tabs */}
+      <button className="flex items-center gap-2 px-2 py-2 mb-2 rounded font-semibold text-gray-800 hover:bg-violet-200 cursor-pointer transition  ">
+        <Cpu size={18} />
         AI-Interview
-      </Link>
+      </button>
 
-      {/* Blogs */}
-      <Link
-        href="/interview/blogs"
-        className="flex items-center gap-2 px-2 py-2 rounded font-semibold text-gray-800 dark:text-gray-200 hover:bg-violet-200 dark:hover:bg-neutral-800"
-      >
+      <button className="flex items-center gap-2 px-2 py-2 mb-2 rounded font-semibold text-gray-800 hover:bg-violet-200 cursor-pointer transition ">
         <FileText size={18} />
         Blogs
-      </Link>
-
-      {/* Spacer */}
-      <div className="flex-1"></div>
+      </button>
+      <button className="flex items-center gap-2 px-2 py-2 mb-2 rounded font-semibold text-gray-800 hover:bg-violet-200 cursor-pointer transition ">
+        <BriefcaseBusiness size={18} />
+        Jobs
+      </button>
     </aside>
   );
 }
