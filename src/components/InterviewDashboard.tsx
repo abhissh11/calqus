@@ -11,6 +11,7 @@ import {
   Briefcase,
   BriefcaseBusiness,
 } from "lucide-react";
+import Link from "next/link";
 
 export default function InterviewDashboard({
   activeTab,
@@ -51,7 +52,7 @@ export default function InterviewDashboard({
   };
 
   return (
-    <aside className="w-full h-screen bg-white dark:bg-neutral-900 border-r shadow-md flex flex-col p-4 overflow-y-auto">
+    <aside className="w-full h-fit md:h-screen bg-white dark:bg-neutral-900 border-r shadow-md flex flex-col p-4 overflow-y-auto">
       <h2 className="text-xl font-bold mb-6 text-violet-600 etxt-center">
         Interview DB
       </h2>
@@ -94,19 +95,25 @@ export default function InterviewDashboard({
       </div>
 
       {/* Other Tabs */}
-      <button className="flex items-center gap-2 px-2 py-2 mb-2 rounded font-semibold text-gray-800 hover:bg-violet-200 cursor-pointer transition  ">
-        <Cpu size={18} />
-        AI-Interview
-      </button>
+      <Link href="/interview/practice">
+        <button className="flex items-center gap-2 px-2 py-2 mb-2 rounded font-semibold text-gray-800 hover:bg-violet-200 cursor-pointer transition  ">
+          <Cpu size={18} />
+          AI-Interview
+        </button>
+      </Link>
 
-      <button className="flex items-center gap-2 px-2 py-2 mb-2 rounded font-semibold text-gray-800 hover:bg-violet-200 cursor-pointer transition ">
-        <FileText size={18} />
-        Blogs
-      </button>
-      <button className="flex items-center gap-2 px-2 py-2 mb-2 rounded font-semibold text-gray-800 hover:bg-violet-200 cursor-pointer transition ">
-        <BriefcaseBusiness size={18} />
-        Jobs
-      </button>
+      <Link href="/blogs">
+        <button className="flex items-center gap-2 px-2 py-2 mb-2 rounded font-semibold text-gray-800 hover:bg-violet-200 cursor-pointer transition ">
+          <FileText size={18} />
+          Blogs
+        </button>
+      </Link>
+      <Link href="jobs">
+        <button className="flex items-center gap-2 px-2 py-2 mb-2 rounded font-semibold text-gray-800 hover:bg-violet-200 cursor-pointer transition ">
+          <BriefcaseBusiness size={18} />
+          Jobs
+        </button>
+      </Link>
     </aside>
   );
 }

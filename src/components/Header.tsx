@@ -148,7 +148,7 @@ export default function Header() {
         </ul>
 
         {/* Desktop Right Section */}
-        <div className="hidden md:flex items-center gap-4 text-gray-700 dark:text-gray-200">
+        <div className="hidden lg:flex items-center gap-4 text-gray-700 dark:text-gray-200">
           {status === "loading" ? (
             <span>Loading...</span>
           ) : session ? (
@@ -203,7 +203,7 @@ export default function Header() {
         {/* Mobile Menu Toggle */}
         <button
           onClick={() => setMobileOpen(!mobileOpen)}
-          className="md:hidden p-1 text-gray-700 cursor-pointer hover:bg-violet-600 hover:text-white rounded-lg dark:text-gray-200"
+          className="lg:hidden p-1 text-gray-700 cursor-pointer hover:bg-violet-600 hover:text-white rounded-lg dark:text-gray-200"
         >
           {mobileOpen ? <X size={28} /> : <Menu size={28} />}
         </button>

@@ -68,7 +68,7 @@ export default function TopicContent({ topic }: { topic: string | null }) {
   const subjectSummary = topic ? summary[topic.toLowerCase()] : null;
 
   return (
-    <div>
+    <div className="bg-violet-100 p-4 rounded-lg">
       <h1 className="text-2xl font-bold mb-2 capitalize">{topic}</h1>
       {subjectSummary && !summaryLoading && (
         <p className="text-gray-600 mb-4">
