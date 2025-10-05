@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { connectDB } from "@/lib/mongodb";
-import { IJob, Job } from "../../../models/Job";
+import { IJob, Job } from "@/models/job"
 import { auth } from "../../../../auth";
 import { generateJobSlug } from "@/lib/generateSlug";
 import mongoose, { FilterQuery } from "mongoose";
