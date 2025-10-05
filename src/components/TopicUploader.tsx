@@ -32,8 +32,11 @@ export default function TopicUploader() {
 
       setSuccess("Topic uploaded successfully ✅");
       (e.target as HTMLFormElement).reset();
-    } catch (err: any) {
-      setError(err.message || "Something went wrong");
+    } catch (err: unknown) {
+      if (err instanceof Error) { 
+        setError(err.message || "Something went wrong");
+      }
+
     } finally {
       setLoading(false);
     }

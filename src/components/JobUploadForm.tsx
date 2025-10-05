@@ -40,7 +40,7 @@ export default function NewJobPage() {
       const job = await res.json();
       router.push(`/jobs/${job.slug}`); // redirect to job page
     } catch (err: unknown) {
-      if (err instanceof Error) {
+      if (err instanceof Error) { 
         setError(err.message);
       } else {
         setError("Something went wrong");

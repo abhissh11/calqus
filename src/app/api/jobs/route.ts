@@ -1,9 +1,9 @@
 import { NextResponse } from "next/server";
 import { connectDB } from "@/lib/mongodb";
-import { Job } from "@/models/Job";
+import { IJob, Job } from "../../../models/Job";
 import { auth } from "../../../../auth";
 import { generateJobSlug } from "@/lib/generateSlug";
-import mongoose from "mongoose";
+import mongoose, { FilterQuery } from "mongoose";
 
 // GET /api/jobs?page=1&jobType=Full Time&experience=2&title=Frontend
 export async function GET(req: Request) {
@@ -19,7 +19,8 @@ export async function GET(req: Request) {
     const experience = searchParams.get("experience");
     const title = searchParams.get("title");
 
-    const query: any = {};
+    // const query: any = {};
+    const query: FilterQuery<IJob> = {};
 
     if (jobType) query.jobType = jobType;
     if (experience) query.experience = { $regex: experience, $options: "i" };

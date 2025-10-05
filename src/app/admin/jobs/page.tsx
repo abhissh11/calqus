@@ -23,7 +23,7 @@ export default function NewJobPage() {
       experience: formData.get("experience"),
       companyLogo: formData.get("companyLogo"),
       applyLink: formData.get("applyLink"),
-      jobDescription: formData.get("jobDescription"), // ✅ include description
+      jobDescription: formData.get("jobDescription"), 
     };
 
     try {
@@ -38,9 +38,11 @@ export default function NewJobPage() {
       }
 
       const job = await res.json();
-      router.push(`/jobs/${job.slug}`); // redirect to job page
-    } catch (err: any) {
+      router.push(`/jobs/${job.slug}`); 
+    } catch (err: unknown) {
+      if (err instanceof Error) { 
       setError(err.message || "Something went wrong");
+      }
     } finally {
       setLoading(false);
     }
