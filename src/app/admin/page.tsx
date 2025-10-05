@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 import { auth } from "../../../auth";
-import TopicUploader from "@/components/TopicUploader";
+import AdminDashboard from "../../components/AdminDashboard";
 
 export default async function AdminPage() {
   const session = await auth();
@@ -13,16 +13,15 @@ export default async function AdminPage() {
     redirect("/403");
   }
 
-  return (
-    <main className="min-h-screen flex flex-col items-center justify-center">
-      <h1 className="text-4xl font-bold mb-4"> Admin Dashboard</h1>
-      <p>Welcome back, {session.user?.name}!</p>
-
-      {session?.user?.isAdmin && (
-        <div className="mt-6">
-          <TopicUploader />
-        </div>
-      )}
+    return (
+    <main className="max-w-6xl mx-auto my-20 px-4 md:px-8">
+      <h1 className="text-3xl font-bold mb-6 text-center text-violet-600">
+        Admin Dashboard
+      </h1>
+      <p className="text-gray-600 text-center mb-10">
+        Manage Jobs, Courses, and Interview Topics for Calqus Platform
+      </p>
+      <AdminDashboard/>
     </main>
   );
 }
