@@ -7,19 +7,6 @@ import { BackgroundBeams } from "@/components/ui/background-beams";
 import Link from "next/link";
 import { Job } from "../../types/job";
 
-// // ✅ Define a proper Job type for type safety
-// interface Job {
-//   _id: string;
-//   slug: string;
-//   title: string;
-//   company: string;
-//   location?: string; // ✅ optional — fixes build error
-//   jobType: string;
-//   companyLogo: string;
-//   salary?: string;
-//   experience?: string;
-//   postedAt?: string;
-// }
 
 export default function JobsPage() {
   const { jobs, loading, page, setPage, totalPages, filters, setFilters } =
