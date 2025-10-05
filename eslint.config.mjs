@@ -19,6 +19,9 @@ const eslintConfig = [
       "@typescript-eslint/no-non-null-assertion": "off",
       "@typescript-eslint/ban-ts-comment": "off",
 
+           // 🔧 Next.js image rule
+      "@next/next/no-img-element": "off",
+
       // 🔧 React
       "react/no-unescaped-entities": "off",
       "react-hooks/exhaustive-deps": "off",

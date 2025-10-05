@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 
 interface JobCardProps {
@@ -21,14 +22,20 @@ export default function JobCard({ job }: JobCardProps) {
   return (
     <Link
       href={`/jobs/${job.slug}`}
-      className="flex flex-col sm:flex-row gap-6 p-4 border border-gray-400 rounded-lg hover:shadow-md shadow-violet-300 transition bg-white"
+      className="flex flex-col sm:flex-row gap-6 p-4 border border-gray-300 rounded-lg hover:shadow-md shadow-violet-200 transition bg-white"
     >
       {/* Company Logo / Image */}
-      <div className="w-full sm:w-40 h-40 sm:h-28 flex-shrink-0">
-        <img
-          src={job.companyLogo || "/images/tech-office.jpg"}
+      <div className="w-full sm:w-40 h-40 sm:h-28 flex-shrink-0 relative">
+        <Image
+          src={
+            job.companyLogo ||
+            "https://images.unsplash.com/photo-1549757521-4160565ff3de?q=80&w=774&auto=format&fit=crop"
+          }
           alt={job.company}
+          width={160} // fixed for optimization
+          height={120} // fixed for optimization
           className="w-full h-full object-cover rounded-md"
+          priority
         />
       </div>
 
@@ -36,11 +43,11 @@ export default function JobCard({ job }: JobCardProps) {
       <div className="flex flex-col justify-between flex-1 mt-3 sm:mt-0">
         <div>
           {/* Title */}
-          <h2 className="text-lg font-semibold text-gray-900">
+          <h2 className="text-lg font-semibold text-gray-900 leading-snug">
             {job.company} is hiring for {job.title} | {job.location}
           </h2>
 
-          {/* Posted by & date */}
+          {/* Posted date */}
           <p className="text-sm text-gray-500 mt-1">
             Posted -{" "}
             {job.postedAt

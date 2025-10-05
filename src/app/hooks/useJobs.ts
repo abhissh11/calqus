@@ -59,7 +59,6 @@ export function useJobs(initialPage = 1, initialFilters: JobFilters = {}) {
 
   useEffect(() => {
     fetchJobs();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page, filters]);
 
   return { jobs, loading, page, setPage, totalPages, filters, setFilters };
