@@ -2,11 +2,8 @@
 
 import { useState } from "react";
 import {
-  ChevronsUpDown,
-  Menu,
   SquareChevronDown,
   SquareChevronUp,
-  X,
 } from "lucide-react";
 import InterviewDashboard from "./InterviewDashboard";
 

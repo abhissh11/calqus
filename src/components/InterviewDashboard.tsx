@@ -8,44 +8,53 @@ import {
   BookOpen,
   Cpu,
   FileText,
-  Briefcase,
   BriefcaseBusiness,
 } from "lucide-react";
 import Link from "next/link";
 
-export default function InterviewDashboard({
-  activeTab,
-}: {
+interface InterviewDashboardProps {
   activeTab: string | null;
-}) {
-  const [open, setOpen] = useState(true);
+}
+
+interface ApiTopic {
+  subject?: string;
+}
+
+export default function InterviewDashboard({ activeTab }: InterviewDashboardProps) {
+  const [open, setOpen] = useState<boolean>(true);
   const [subjects, setSubjects] = useState<string[]>([]);
   const router = useRouter();
   const searchParams = useSearchParams();
 
   useEffect(() => {
-    const fetchSubjects = async () => {
+    const fetchSubjects = async (): Promise<void> => {
       try {
         const res = await fetch("/api/interview-topics");
-        const data = await res.json();
+        if (!res.ok) throw new Error("Failed to fetch subjects");
+        const data: ApiTopic[] = await res.json();
 
-        const uniqueSubjects: string[] = Array.from(
+        const uniqueSubjects = Array.from(
           new Set(
             data
-              .map((t: any) => t?.subject?.trim())
-              .filter((s: string | undefined) => !!s)
+              .map((t) => t.subject?.trim())
+              .filter((s): s is string => Boolean(s))
           )
         );
 
         setSubjects(uniqueSubjects);
       } catch (err) {
-        console.error("Failed to fetch subjects", err);
+        if (err instanceof Error) {
+          console.error("Failed to fetch subjects:", err.message);
+        } else {
+          console.error("Unknown error fetching subjects");
+        }
       }
     };
+
     fetchSubjects();
   }, []);
 
-  const handleClick = (subject: string) => {
+  const handleClick = (subject: string): void => {
     const params = new URLSearchParams(searchParams.toString());
     params.set("tab", subject.toLowerCase());
     router.push(`?${params.toString()}`);
@@ -53,14 +62,14 @@ export default function InterviewDashboard({
 
   return (
     <aside className="w-full h-fit md:h-screen bg-white dark:bg-neutral-900 border-r shadow-md flex flex-col p-4 overflow-y-auto">
-      <h2 className="text-xl font-bold mb-6 text-violet-600 etxt-center">
+      <h2 className="text-xl font-bold mb-6 text-violet-600 text-center">
         Interview DB
       </h2>
 
       {/* Subjects Dropdown */}
       <div className="mb-6">
         <button
-          onClick={() => setOpen(!open)}
+          onClick={() => setOpen((prev) => !prev)}
           className="flex items-center justify-between w-full font-semibold text-gray-100 px-2 py-2 rounded bg-violet-500"
         >
           <span className="flex items-center gap-2">
@@ -73,13 +82,12 @@ export default function InterviewDashboard({
         {open && (
           <ul className="mt-2 px-4 py-4 space-y-2 text-sm text-gray-700 bg-violet-200 rounded-sm">
             {subjects.map((subj) => {
-              if (!subj) return null;
               const isActive = activeTab === subj.toLowerCase();
               return (
                 <li key={subj}>
                   <button
                     onClick={() => handleClick(subj)}
-                    className={`w-full text-left px-2 py-1 rounded cursor-pointer ${
+                    className={`w-full text-left px-2 py-1 rounded cursor-pointer transition ${
                       isActive
                         ? "bg-violet-300 text-violet-700 font-semibold"
                         : "hover:bg-violet-50 dark:hover:bg-neutral-800"
@@ -96,20 +104,21 @@ export default function InterviewDashboard({
 
       {/* Other Tabs */}
       <Link href="/interview/practice">
-        <button className="flex items-center gap-2 px-2 py-2 mb-2 rounded font-semibold text-gray-800 hover:bg-violet-200 cursor-pointer transition  ">
+        <button className="flex items-center gap-2 px-2 py-2 mb-2 rounded font-semibold text-gray-800 hover:bg-violet-200 cursor-pointer transition">
           <Cpu size={18} />
           AI-Interview
         </button>
       </Link>
 
       <Link href="/blogs">
-        <button className="flex items-center gap-2 px-2 py-2 mb-2 rounded font-semibold text-gray-800 hover:bg-violet-200 cursor-pointer transition ">
+        <button className="flex items-center gap-2 px-2 py-2 mb-2 rounded font-semibold text-gray-800 hover:bg-violet-200 cursor-pointer transition">
           <FileText size={18} />
           Blogs
         </button>
       </Link>
-      <Link href="jobs">
-        <button className="flex items-center gap-2 px-2 py-2 mb-2 rounded font-semibold text-gray-800 hover:bg-violet-200 cursor-pointer transition ">
+
+      <Link href="/jobs">
+        <button className="flex items-center gap-2 px-2 py-2 mb-2 rounded font-semibold text-gray-800 hover:bg-violet-200 cursor-pointer transition">
           <BriefcaseBusiness size={18} />
           Jobs
         </button>

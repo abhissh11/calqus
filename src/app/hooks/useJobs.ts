@@ -2,39 +2,65 @@
 
 import { useState, useEffect } from "react";
 
+export interface Job {
+  _id: string;
+  slug: string;
+  title: string;
+  company: string;
+  location?: string;
+  jobType: "Full Time" | "Part Time" | "Internship" | "Contract";
+  salary: string;
+  experience: string;
+  companyLogo?: string;
+  jobDescription?: string;
+  applyLink?: string;
+  postedAt?: string;
+}
+
 export interface JobFilters {
-    jobType?: string;
-    experience?: string;
-    title?: string;
+  jobType?: string;
+  experience?: string;
+  title?: string;
 }
 
 export function useJobs(initialPage = 1, initialFilters: JobFilters = {}) {
-    const [jobs, setJobs] = useState<any[]>([]);
-    const [loading, setLoading] = useState(true);
-    const [page, setPage] = useState(initialPage);
-    const [totalPages, setTotalPages] = useState(1);
-    const [filters, setFilters] = useState<JobFilters>(initialFilters);
+  const [jobs, setJobs] = useState<Job[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [page, setPage] = useState<number>(initialPage);
+  const [totalPages, setTotalPages] = useState<number>(1);
+  const [filters, setFilters] = useState<JobFilters>(initialFilters);
 
-    const fetchJobs = async () => {
-        setLoading(true);
-        const query = new URLSearchParams({
-            page: page.toString(),
-            ...(filters.jobType && { jobType: filters.jobType }),
-            ...(filters.experience && { experience: filters.experience }),
-            ...(filters.title && { title: filters.title }),
-        });
+  const fetchJobs = async (): Promise<void> => {
+    try {
+      setLoading(true);
 
-        const res = await fetch(`/api/jobs?${query}`);
-        const data = await res.json();
+      const query = new URLSearchParams({
+        page: page.toString(),
+        ...(filters.jobType ? { jobType: filters.jobType } : {}),
+        ...(filters.experience ? { experience: filters.experience } : {}),
+        ...(filters.title ? { title: filters.title } : {}),
+      });
 
-        setJobs(data.jobs);
-        setTotalPages(data.totalPages);
-        setLoading(false);
-    };
+      const res = await fetch(`/api/jobs?${query.toString()}`);
+      if (!res.ok) throw new Error("Failed to fetch jobs");
 
-    useEffect(() => {
-        fetchJobs();
-    }, [page, filters]);
+      const data: { jobs: Job[]; totalPages: number } = await res.json();
 
-    return { jobs, loading, page, setPage, totalPages, filters, setFilters };
+      setJobs(data.jobs || []);
+      setTotalPages(data.totalPages || 1);
+    } catch (err) {
+      console.error("Error fetching jobs:", err);
+      setJobs([]);
+      setTotalPages(1);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchJobs();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [page, filters]);
+
+  return { jobs, loading, page, setPage, totalPages, filters, setFilters };
 }
