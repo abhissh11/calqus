@@ -1,9 +1,25 @@
 "use client";
+
 import JobCard from "@/components/JobCard";
 import { useJobs } from "../hooks/useJobs";
 import { BriefcaseBusiness, SendHorizontal } from "lucide-react";
 import { BackgroundBeams } from "@/components/ui/background-beams";
 import Link from "next/link";
+import { Job } from "../../types/job";
+
+// // ✅ Define a proper Job type for type safety
+// interface Job {
+//   _id: string;
+//   slug: string;
+//   title: string;
+//   company: string;
+//   location?: string; // ✅ optional — fixes build error
+//   jobType: string;
+//   companyLogo: string;
+//   salary?: string;
+//   experience?: string;
+//   postedAt?: string;
+// }
 
 export default function JobsPage() {
   const { jobs, loading, page, setPage, totalPages, filters, setFilters } =
@@ -47,7 +63,7 @@ export default function JobsPage() {
                 <h2 className="text-xl font-semibold">
                   Join the Premium Group
                 </h2>
-                <p className="text-sm text-gray-600 dark:text-gray-400 ">
+                <p className="text-sm text-gray-600 dark:text-gray-400">
                   Referral group is a private group where we share exclusive
                   referrals, direct recruiter contacts, Insider openings & more.
                   <br /> Everyday 30-40 verified referrals and openings are
@@ -58,15 +74,15 @@ export default function JobsPage() {
                   <button className="group w-full flex gap-1 items-end px-4 py-2 text-white rounded-lg bg-violet-600 hover:bg-violet-700 cursor-pointer">
                     Message to Join
                     <span>
-                      <SendHorizontal className="group-hover:translate-x-1.5 transition delay-75" />{" "}
+                      <SendHorizontal className="group-hover:translate-x-1.5 transition delay-75" />
                     </span>
                   </button>
                 </Link>
               </div>
-              <div className="border border-gray-400 p-2 rounded-lg ">
+              <div className="border border-gray-400 p-2 rounded-lg">
                 <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
                   Get jobs and internships posted on Calqus directly delivered
-                  to your whatsapp inbox.
+                  to your WhatsApp inbox.
                 </p>
                 <button className="w-full px-4 py-2 text-white rounded-lg bg-violet-600 hover:bg-violet-700 cursor-pointer">
                   Join WhatsApp Group
@@ -119,7 +135,7 @@ export default function JobsPage() {
               <p>Loading jobs...</p>
             ) : (
               <div className="space-y-4">
-                {jobs.map((job) => (
+                {jobs.map((job: Job) => (
                   <JobCard key={job._id} job={job} />
                 ))}
               </div>
@@ -130,7 +146,7 @@ export default function JobsPage() {
               <button
                 disabled={page === 1}
                 onClick={() => setPage((p) => p - 1)}
-                className="px-3 py-1 border text-white bg-violet-500 hover:bg-violet-600 cursor-pointer  rounded disabled:opacity-50"
+                className="px-3 py-1 border text-white bg-violet-500 hover:bg-violet-600 cursor-pointer rounded disabled:opacity-50"
               >
                 Previous
               </button>

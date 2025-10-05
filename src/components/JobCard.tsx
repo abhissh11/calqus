@@ -2,20 +2,10 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import type { Job } from "@/types/job"; 
 
 interface JobCardProps {
-  job: {
-    _id: string;
-    slug: string;
-    title: string;
-    company: string;
-    location: string;
-    jobType: string;
-    companyLogo: string;
-    salary?: string;
-    experience?: string;
-    postedAt?: string;
-  };
+  job: Job;
 }
 
 export default function JobCard({ job }: JobCardProps) {
@@ -32,8 +22,8 @@ export default function JobCard({ job }: JobCardProps) {
             "https://images.unsplash.com/photo-1549757521-4160565ff3de?q=80&w=774&auto=format&fit=crop"
           }
           alt={job.company}
-          width={160} // fixed for optimization
-          height={120} // fixed for optimization
+          width={160} 
+          height={120}
           className="w-full h-full object-cover rounded-md"
           priority
         />
@@ -44,10 +34,11 @@ export default function JobCard({ job }: JobCardProps) {
         <div>
           {/* Title */}
           <h2 className="text-lg font-semibold text-gray-900 leading-snug">
-            {job.company} is hiring for {job.title} | {job.location}
+            {job.company} is hiring for {job.title}
+            {job.location ? ` | ${job.location}` : ""}
           </h2>
 
-          {/* Posted date */}
+          {/* Posted Date */}
           <p className="text-sm text-gray-500 mt-1">
             Posted -{" "}
             {job.postedAt

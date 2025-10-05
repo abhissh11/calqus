@@ -1,21 +1,9 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { Job } from "../../types/job";
 
-export interface Job {
-  _id: string;
-  slug: string;
-  title: string;
-  company: string;
-  location?: string;
-  jobType: "Full Time" | "Part Time" | "Internship" | "Contract";
-  salary: string;
-  experience: string;
-  companyLogo?: string;
-  jobDescription?: string;
-  applyLink?: string;
-  postedAt?: string;
-}
+
 
 export interface JobFilters {
   jobType?: string;
