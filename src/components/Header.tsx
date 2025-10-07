@@ -62,12 +62,13 @@ export default function Header() {
       <header className="fixed top-0 left-0 w-full z-50 bg-white dark:bg-black px-5 md:px-7 py-2 shadow-sm border-b flex gap-2 justify-between items-center">
         {/* Logo */}
         <Link href="/">
-          <h1 className="text-neutral-800 dark:text-neutral-100 text-2xl font-bold flex items-center">
+          <h1 className="text-neutral-800 dark:text-neutral-100 text-2xl font-bold flex gap-1 items-center">
             <Image
               src="/images/calqus-logo.png"
               alt="logo"
               width={36}
               height={36}
+              className="rounded-sm"
             />{" "}
             Calqus
           </h1>
@@ -217,12 +218,12 @@ export default function Header() {
               exit={{ opacity: 0, x: "100%" }}
               transition={{ duration: 0.25, ease: "easeInOut" }}
               ref={drawerRef}
-              className="fixed top-0 right-0 h-screen w-3/4 bg-white dark:bg-neutral-900 shadow-lg z-50 p-6 flex flex-col gap-6 items-start justify-center"
+              className="fixed top-0 right-0 h-screen w-3/4 bg-white dark:bg-neutral-900 shadow-lg z-50 p-6 flex flex-col gap-6 items-start "
             >
               {/* Close Icon */}
               <button
                 onClick={() => setMobileOpen(false)}
-                className="absolute top-4 right-4 text-gray-100 p-1 rounded-lg bg-violet-500 cursor-pointer hover:bg-violet-600 dark:text-gray-200"
+                className="absolute top-4 right-4 text-gray-400 p-1 rounded-lg border border-violet-500 cursor-pointer hover:bg-violet-600 dark:text-gray-200"
               >
                 <X size={28} />
               </button>
@@ -266,11 +267,11 @@ export default function Header() {
                 <BookOpen size={24} /> Courses
               </Link>
               <Link
-                href="/courses"
+                href="/interview"
                 className="hover:text-violet-500 flex items-end gap-1"
                 onClick={() => setMobileOpen(false)}
               >
-                <FileQuestionMark size={24} /> Interview-Questions
+                <FileQuestionMark size={24} /> Interview-Prep
               </Link>
               <Link
                 href="/jobs"
@@ -281,19 +282,19 @@ export default function Header() {
               </Link>
 
               {/* User Info */}
-              <div className="mt-auto flex flex-col gap-3">
+              <div className="mt-2 flex flex-col gap-3">
                 {status === "loading" ? (
                   <span>Loading...</span>
                 ) : session ? (
                   <>
-                    <span className="font-medium text-gray-200">
+                    <span className="font-medium text-gray-800">
                       {firstName}
                     </span>
                     {session.user?.isAdmin && (
                       <Link
                         href="/admin"
                         onClick={() => setMobileOpen(false)}
-                        className="px-4 py-2 bg-gray-100 dark:bg-neutral-800 rounded hover:bg-gray-200 dark:hover:bg-neutral-700"
+                        className="px-4 py-2 bg-gray-200 dark:bg-neutral-800 rounded hover:bg-gray-200 dark:hover:bg-neutral-700"
                       >
                         Admin
                       </Link>

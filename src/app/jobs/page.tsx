@@ -6,6 +6,7 @@ import { BriefcaseBusiness, SendHorizontal } from "lucide-react";
 import { BackgroundBeams } from "@/components/ui/background-beams";
 import Link from "next/link";
 import { Job } from "../../types/job";
+import JobsLoadingSkeleton from "../../components/JobsLoadingSkeleton";
 
 
 export default function JobsPage() {
@@ -119,7 +120,7 @@ export default function JobsPage() {
 
             {/* Job List */}
             {loading ? (
-              <p>Loading jobs...</p>
+              <JobsLoadingSkeleton />
             ) : (
               <div className="space-y-4">
                 {jobs.map((job: Job) => (

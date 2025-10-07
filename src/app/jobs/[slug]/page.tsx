@@ -58,7 +58,7 @@ export default async function JobPage({ params }: JobPageProps) {
         </p>
       </div>
 
-      {/* ✅ Optimized Image */}
+      {/* Optimized Image */}
       <div className="w-full sm:w-4/5 h-48 sm:h-56 mb-6 relative">
         <Image
           src={

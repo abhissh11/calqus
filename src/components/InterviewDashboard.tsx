@@ -42,6 +42,15 @@ export default function InterviewDashboard({ activeTab }: InterviewDashboardProp
         );
 
         setSubjects(uniqueSubjects);
+
+        // Automatically select the first subject if no tab is set
+        const currentTab = searchParams.get("tab");
+        if (!currentTab && uniqueSubjects.length > 0) {
+          const first = uniqueSubjects[0].toLowerCase();
+          const params = new URLSearchParams(searchParams.toString());
+          params.set("tab", first);
+          router.replace(`?${params.toString()}`); 
+        }
       } catch (err) {
         if (err instanceof Error) {
           console.error("Failed to fetch subjects:", err.message);
@@ -52,7 +61,7 @@ export default function InterviewDashboard({ activeTab }: InterviewDashboardProp
     };
 
     fetchSubjects();
-  }, []);
+  }, []); 
 
   const handleClick = (subject: string): void => {
     const params = new URLSearchParams(searchParams.toString());
@@ -81,6 +90,9 @@ export default function InterviewDashboard({ activeTab }: InterviewDashboardProp
 
         {open && (
           <ul className="mt-2 px-4 py-4 space-y-2 text-sm text-gray-700 bg-violet-200 rounded-sm">
+            {subjects.length === 0 && (
+  <p className="text-gray-400 italic text-sm mt-3">Loading subjects...</p>
+)}
             {subjects.map((subj) => {
               const isActive = activeTab === subj.toLowerCase();
               return (
