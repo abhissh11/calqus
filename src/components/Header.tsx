@@ -235,29 +235,15 @@ export default function Header() {
               >
                 <House size={24} /> Home
               </Link>
+              <Link
+                href="/services"
+                className="hover:text-violet-500 flex items-end gap-1"
+                onClick={() => setMobileOpen(false)}
+              >
+              <CodeXml size={24} /> Services
+              </Link>
 
-              <div>
-                <p className="font-medium text-gray-700 flex items-end gap-1 dark:text-gray-200 mb-2">
-                  <CodeXml size={24} /> Services
-                </p>
-                <div className="flex flex-col gap-2">
-                  <ServiceItem
-                    icon={<Palette size={20} className="text-violet-500" />}
-                    title="Web Design"
-                    onClick={() => setMobileOpen(false)}
-                  />
-                  <ServiceItem
-                    icon={<Smartphone size={20} className="text-violet-500" />}
-                    title="App Development"
-                    onClick={() => setMobileOpen(false)}
-                  />
-                  <ServiceItem
-                    icon={<Server size={20} className="text-violet-500" />}
-                    title="Fullstack Webapp Development"
-                    onClick={() => setMobileOpen(false)}
-                  />
-                </div>
-              </div>
+              
 
               <Link
                 href="/courses"
@@ -304,7 +290,7 @@ export default function Header() {
                         setMobileOpen(false);
                         signOut();
                       }}
-                      className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600"
+                      className="px-4 py-2 border border-red-400 text-gray-800 rounded-lg hover:bg-red-100 cursor-pointer"
                     >
                       Logout
                     </button>

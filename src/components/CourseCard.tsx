@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import { toast } from "sonner";
 
 type CourseCardProps = {
   title: string;
@@ -17,6 +18,10 @@ export function CourseCard({
   topics,
   cta,
 }: CourseCardProps) {
+  const handleClick = () => {
+    toast.info("🚀 Course coming soon!");
+  };
+
   return (
     <div className="bg-white rounded-xl shadow-md p-6 hover:shadow-lg transition">
       <h2 className="text-xl font-semibold text-gray-800 mb-2">{title}</h2>
@@ -37,7 +42,10 @@ export function CourseCard({
         ))}
       </div>
 
-      <button className="w-full px-4 py-2 bg-violet-600 text-white font-medium rounded-lg hover:bg-violet-700 transition">
+      <button
+        onClick={handleClick}
+        className="cursor-pointer w-full px-4 py-2 bg-violet-600 text-white font-medium rounded-lg hover:bg-violet-700 transition"
+      >
         {cta}
       </button>
     </div>

@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X } from "lucide-react";
+import Image from "next/image";
 
 type BookCallModalProps = {
   isOpen: boolean;
@@ -69,10 +70,16 @@ export default function BookCallModal({ isOpen, onClose }: BookCallModalProps) {
             {/* Close button */}
             <button
               onClick={onClose}
-              className="absolute top-3 right-3 hover:bg-violet-200 p-1 rounded-lg cursor-pointer text-gray-600 hover:text-gray-900"
+              className="absolute top-3 right-3 hover:bg-violet-300 p-1 rounded-lg border border-violet-500 cursor-pointer text-gray-600 hover:text-gray-900"
             >
               <X />
             </button>
+
+            <Image  src="/images/calqus-logo.png"
+              alt="logo"
+              width={36}
+              height={36}
+              className="rounded-sm"/>
 
             <h2 className="text-xl font-bold text-gray-800 mb-4">
               Book a Session With Us
@@ -130,10 +137,10 @@ export default function BookCallModal({ isOpen, onClose }: BookCallModalProps) {
             <p className="text-sm text-gray-600 mt-4 text-center">
               or email us at{" "}
               <a
-                href="mailto:abc@gmail.com"
+                href="mailto:oddfolds@gmail.com"
                 className="text-violet-600 font-medium"
               >
-                abc@gmail.com
+                oddfolds@gmail.com
               </a>
             </p>
           </motion.div>

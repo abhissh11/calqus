@@ -3,7 +3,7 @@ import { CourseCard } from "@/components/CourseCard";
 
 const courses = [
   {
-    title: "Frontend Development",
+    title: "Frontend Development 0-100 with Nextjs",
     description:
       "Master HTML, CSS, JavaScript, React, and Next.js to build modern and responsive web applications.",
     duration: "3 Months",
@@ -35,7 +35,7 @@ export default function CoursePage() {
       <div className="bg-gradient-to-tr from-violet-500 via-violet-700 to-violet-900 text-white flex flex-col gap-6 md:flex-row justify-between items-center rounded-2xl p-8 text-start mb-12 shadow-lg border border-violet-600">
         <div className="flex flex-col gap-1">
           <h1 className="text-3xl font-bold">
-            Boost Your Learning with Roadmaps & Sheets 🚀
+            Boost Your preparation with Resources & Interview Sheets 🚀
           </h1>
           <p className="text-base text-gray-200">
             Explore curated learning paths for MERN, Java, ML, AI and more to
@@ -43,10 +43,10 @@ export default function CoursePage() {
           </p>
         </div>
         <Link
-          href="/resources"
+          href="/interview"
           className="px-6 py-3 h-fit bg-white text-center text-violet-600 font-semibold rounded-lg shadow hover:bg-gray-100 transition"
         >
-          Explore Roadmaps
+          Explore Resources
         </Link>
       </div>
 
