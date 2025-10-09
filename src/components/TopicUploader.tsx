@@ -54,7 +54,7 @@ export default function TopicUploader() {
           <select
             name="subject"
             required
-            className="w-full border p-2 rounded"
+            className="w-full border p-2 rounded cursor-pointer"
             defaultValue=""
           >
             <option value="" disabled>
@@ -64,7 +64,10 @@ export default function TopicUploader() {
             <option value="ReactJs">ReactJs</option>
             <option value="NodeJs">NodeJs</option>
             <option value="MongoDB">MongoDB</option>
-            <option value="Docker">Docker</option>
+            <option value="DSA">DSA</option>
+            <option value="SQL">SQL</option>
+            <option value="GenAI">GenAI</option>
+            <option value="DevOps">DevOps</option>
             <option value="NextJs">NextJs</option>
             <option value="Java">Java</option>
           </select>
