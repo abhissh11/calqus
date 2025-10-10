@@ -75,10 +75,10 @@ export default function BookCallModal({ isOpen, onClose }: BookCallModalProps) {
               <X />
             </button>
 
-            <Image  src="/images/calqus-logo.png"
+            <Image  src="/images/calqus-logo.jpg"
               alt="logo"
-              width={36}
-              height={36}
+              width={56}
+              height={56}
               className="rounded-sm"/>
 
             <h2 className="text-xl font-bold text-gray-800 mb-4">

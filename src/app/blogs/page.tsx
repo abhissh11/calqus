@@ -26,7 +26,7 @@ export default function Page() {
           <Link href="/">
             <h1 className="mb-6 text-neutral-800 dark:text-neutral-100 text-2xl font-bold flex gap-2 items-center">
               <Image
-                src="/images/calqus-logo.png"
+                src="/images/calqus-logo.jpg"
                 alt="Calqus logo"
                 width={36}
                 height={36}

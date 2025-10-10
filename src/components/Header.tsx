@@ -14,6 +14,7 @@ import {
   FileQuestionMark,
   House,
   CodeXml,
+  FileText,
 } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import Image from "next/image";
@@ -64,7 +65,7 @@ export default function Header() {
         <Link href="/">
           <h1 className="text-neutral-800 dark:text-neutral-100 text-2xl font-bold flex gap-1 items-center">
             <Image
-              src="/images/calqus-logo.png"
+              src="/images/calqus-logo.jpg"
               alt="logo"
               width={36}
               height={36}
@@ -139,6 +140,12 @@ export default function Header() {
             className="hover:text-violet-500 flex items-end gap-1"
           >
             <FileQuestionMark size={24} /> Interview-Prep
+          </Link>
+          <Link
+            href="/blogs"
+            className="hover:text-violet-500 flex items-end gap-1"
+          >
+            <FileText size={24} /> Blogs
           </Link>
           <Link
             href="/jobs"
@@ -258,6 +265,13 @@ export default function Header() {
                 onClick={() => setMobileOpen(false)}
               >
                 <FileQuestionMark size={24} /> Interview-Prep
+              </Link>
+              <Link
+                href="/blogs"
+                className="hover:text-violet-500 flex items-end gap-1"
+                onClick={() => setMobileOpen(false)}
+              >
+                <BriefcaseBusiness size={24} /> Blogs
               </Link>
               <Link
                 href="/jobs"
